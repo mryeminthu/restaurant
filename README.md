@@ -12,7 +12,7 @@ As part of my certification program on coursera, I developed a website for a res
 
 ## 🚀 Live Demo <a name="live-demo"></a>
 
-- [Live Demo Link](https://mryeminthu.github.io/Awesome-books-ES6/)
+- [Live Demo Link](https://mryeminthu.github.io/restaurant/mod5_solution/assignment5-solution-starter/index.html)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
