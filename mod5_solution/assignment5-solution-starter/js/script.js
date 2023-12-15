@@ -47,6 +47,12 @@ $(function () {
     }
   };
 
+  function getRandomCategoryShortName(categories) {
+    var randomArrayIndex = Math.floor(Math.random() * categories.length);
+    return categories[randomArrayIndex].short_name;
+  }
+  
+
   document.addEventListener("DOMContentLoaded", function (event) {
     showLoading("#main-content");
     $ajaxUtils.sendGetRequest(
@@ -60,17 +66,12 @@ $(function () {
     $ajaxUtils.sendGetRequest(
       homeHtmlUrl,
       function (homeHtml) {
-        randomCategoryShortName = chooseRandomCategory(categories).short_name;
+        randomCategoryShortName = getRandomCategoryShortName(categories).short_name;
         var homeHtmlToInsertIntoMainPage = insertProperty(homeHtml, "randomCategoryShortName", randomCategoryShortName);
         insertHtml("#main-content", homeHtmlToInsertIntoMainPage);
       },
       false
     );
-  }
-
-  function chooseRandomCategory(categories) {
-    var randomArrayIndex = Math.floor(Math.random() * categories.length);
-    return categories[randomArrayIndex];
   }
 
   dc.loadMenuCategories = function () {
@@ -84,22 +85,28 @@ $(function () {
 
   dc.loadMenuItems = function (categoryShort) {
     showLoading("#main-content");
-    if (categoryShort !== 'SP') {
+    if (!categoryShort || categoryShort.toUpperCase() === 'SPECIALS') {
+      $ajaxUtils.sendGetRequest(
+        allCategoriesUrl,
+        function (categories) {
+          randomCategoryShortName = getRandomCategoryShortName(categories);
+          $ajaxUtils.sendGetRequest(
+            menuItemsUrl + randomCategoryShortName + ".json",
+            buildAndShowMenuItemsHTML,
+            true
+          );
+        },
+        true
+      );
+    } else {
       $ajaxUtils.sendGetRequest(
         menuItemsUrl + categoryShort + ".json",
         buildAndShowMenuItemsHTML,
         true
       );
-    } else {
-      randomCategoryShortName = chooseRandomCategory(categories).short_name;
-      $ajaxUtils.sendGetRequest(
-        menuItemsUrl + randomCategoryShortName + ".json",
-        buildAndShowMenuItemsHTML,
-        true
-      );
     }
   };
-
+  
   function buildAndShowCategoriesHTML(categories) {
     $ajaxUtils.sendGetRequest(
       categoriesTitleHtml,
@@ -133,23 +140,28 @@ $(function () {
     return finalHtml;
   }
 
-  function buildAndShowMenuItemsHTML(categoryMenuItems) {
-    $ajaxUtils.sendGetRequest(
-      menuItemsTitleHtml,
-      function (menuItemsTitleHtml) {
-        $ajaxUtils.sendGetRequest(
-          menuItemHtml,
-          function (menuItemHtml) {
-            switchMenuToActive();
-            var menuItemsViewHtml = buildMenuItemsViewHtml(categoryMenuItems, menuItemsTitleHtml, menuItemHtml);
-            insertHtml("#main-content", menuItemsViewHtml);
-          },
-          false
-        );
-      },
-      false
-    );
-  }
+  function buildAndShowMenuItemsHTML(response) {
+    if (response && response.menu_items) {
+      $ajaxUtils.sendGetRequest(
+        menuItemsTitleHtml,
+        function (menuItemsTitleHtml) {
+          $ajaxUtils.sendGetRequest(
+            menuItemHtml,
+            function (menuItemHtml) {
+              switchMenuToActive();
+              var menuItemsViewHtml = buildMenuItemsViewHtml(response, menuItemsTitleHtml, menuItemHtml);
+              insertHtml("#main-content", menuItemsViewHtml);
+            },
+            false
+          );
+        },
+        false
+      );
+    } else {
+      console.error("Invalid response from the server. Missing category or menu_items.");
+    }
+  }  
+  
 
   function buildMenuItemsViewHtml(categoryMenuItems, menuItemsTitleHtml, menuItemHtml) {
     menuItemsTitleHtml = insertProperty(menuItemsTitleHtml, "name", categoryMenuItems.category.name);
@@ -181,7 +193,7 @@ $(function () {
     if (!priceValue) {
       return insertProperty(html, pricePropName, "");
     }
-    priceValue = "$" + priceValue.toFixed( 2);
+    priceValue = "$" + priceValue.toFixed(2);
     html = insertProperty(html, pricePropName, priceValue);
     return html;
   }
@@ -198,4 +210,3 @@ $(function () {
   global.$dc = dc;
 
 })(window);
-
