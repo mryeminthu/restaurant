@@ -14,13 +14,12 @@ As part of my certification program on coursera, I developed a website for a res
 
 - [Live Demo Link](https://mryeminthu.github.io/restaurant/mod5_solution/assignment5-solution-starter/index.html)
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## 👥 Author <a name="authors"></a>
 
 👤 **Ye Min Thu**
 
-- GitHub: [@githubhandle](https://github.com/mryeminthu)
+- GitHub: [GitHub](https://github.com/mryeminthu)
+- Twitter: [Twitter](https://twitter.com/mryeminthu)
 - LinkedIn: [LinkedIn](https://www.linkedin.com/in/ye-min-thu-76456a214/)
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
