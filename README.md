@@ -23,3 +23,6 @@ As part of my certification program on coursera, I developed a website for a res
 - Twitter: [Twitter](https://twitter.com/mryeminthu)
 - LinkedIn: [LinkedIn](https://www.linkedin.com/in/ye-min-thu-76456a214/)
 
+## 🙏 Acknowledgments <a name="acknowledgements"></a>
+
+- I extend my gratitude to [Yaakov Chaikin](https://www.coursera.org/instructor/yaakov-chaikin), who is the creator of the original design.
